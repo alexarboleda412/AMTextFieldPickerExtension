@@ -137,7 +137,14 @@ public extension UITextField {
         if pickerView != nil {
             setTextFromPickerView()
             
+            if pickerView?.tag == 2 {
+                setTextFromDateBirthdayPicker()
+            } else {
+                setTextFromPickerView()
+            }
+            
         } else if datePicker != nil {
+            
             setTextFromDatePicker()
         }
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -147,9 +154,20 @@ public extension UITextField {
     }
     
     private func setTextFromPickerView() {
+        
         if let selectedRow = pickerView?.selectedRowInComponent(0),
             title = pickerView?.delegate?.pickerView?(pickerView!, titleForRow: selectedRow, forComponent: 0) {
             self.text = title
+        }
+    }
+    
+    private func setTextFromDateBirthdayPicker() {
+        
+        if let selectedYearRow = pickerView?.selectedRowInComponent(0),
+            yearString = pickerView?.delegate?.pickerView?(pickerView!, titleForRow: selectedYearRow, forComponent: 0),
+            selectedMonthRow = pickerView?.selectedRowInComponent(1),
+            monthString = pickerView?.delegate?.pickerView?(pickerView!, titleForRow: selectedMonthRow, forComponent: 1) {
+            self.text = "\(monthString)/\(yearString)"
         }
     }
     
